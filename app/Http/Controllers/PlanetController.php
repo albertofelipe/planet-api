@@ -2,64 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PlanetResource;
+use App\Http\Requests\PlanetRequest;
+use App\Http\Requests\PlanetUpdateRequest;
 use App\Models\Planet;
-use Illuminate\Http\Request;
 
 class PlanetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return Planet::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(PlanetRequest $request)
     {
-        //
+        $planet = Planet::create($request->validated());
+
+        return response()->json(new PlanetResource($planet));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Planet $planet)
     {
-        //
+        return new PlanetResource($planet);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Planet $planet)
+    
+    public function update(PlanetUpdateRequest $request, Planet $planet)
     {
-        //
+        $planet->update($request->validated());
+
+        return response()->json(new PlanetResource($planet));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Planet $planet)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Planet $planet)
     {
-        //
+        $planet->delete();
+
+        return response()->noContent();
     }
 }
