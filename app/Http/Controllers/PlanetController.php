@@ -12,7 +12,7 @@ class PlanetController extends Controller
      */
     public function index()
     {
-        //
+        return Planet::all();
     }
 
     /**
