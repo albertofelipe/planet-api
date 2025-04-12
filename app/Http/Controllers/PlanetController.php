@@ -28,7 +28,7 @@ class PlanetController extends Controller
     {
         $planet = Planet::create($request->validated());
 
-        return response()->json(new PlanetResource($planet));
+        return response()->json(new PlanetResource($planet), 201);
     }
 
     public function show(Planet $planet)
