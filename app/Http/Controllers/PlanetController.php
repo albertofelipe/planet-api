@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Planet\PlanetFilter;
 use App\Http\Resources\PlanetResource;
 use App\Http\Requests\PlanetRequest;
 use App\Http\Requests\PlanetUpdateRequest;
+use App\Http\Resources\PlanetCollection;
 use App\Models\Planet;
+use Illuminate\Http\Request;
 
 class PlanetController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return Planet::all();
+        $filter = new PlanetFilter;
+
+        $query = $filter->transform($request);
+
+        $planets = Planet::where($query)->paginate(10)->appends($request->query());
+
+        return response()->json(new PlanetCollection($planets));
     }
 
     public function store(PlanetRequest $request)
