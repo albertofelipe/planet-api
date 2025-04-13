@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\PlanetNotFoundException;
 use App\Filters\Planet\PlanetFilter;
 use App\Http\Resources\PlanetResource;
 use App\Http\Requests\PlanetRequest;
@@ -31,8 +32,12 @@ class PlanetController extends Controller
         return response()->json(new PlanetResource($planet), 201);
     }
 
-    public function show(Planet $planet)
+    public function show($id)
     {
+        $planet = Planet::find($id);
+
+        if (!$planet) throw new PlanetNotFoundException();
+        
         return new PlanetResource($planet);
     }
     
@@ -48,5 +53,7 @@ class PlanetController extends Controller
         $planet->delete();
 
         return response()->noContent();
+
+        
     }
 }
