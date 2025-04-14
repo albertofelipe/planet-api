@@ -20,8 +20,9 @@ class PlanetControllerTest extends TestCase
 
         $response->assertOk()
                  ->assertJsonCount(3)
-                 ->assertJsonStructure([
-                    '*' => ['id', 'name', 'climate', 'terrain'] 
+                 ->assertJsonFragment([
+                    'name' => Planet::first()->name,
+                    'climate' => Planet::first()->climate
                  ]);
     }
 

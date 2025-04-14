@@ -29,7 +29,10 @@ class PlanetController extends Controller
     {
         $planet = Planet::create($request->validated());
 
-        return response()->json(new PlanetResource($planet), 201);
+        return response()->json([
+            'message' => 'Planet created successfully.',
+            'data' => new PlanetResource($planet)
+        ], 201);    
     }
 
     public function show($id)
@@ -37,23 +40,32 @@ class PlanetController extends Controller
         $planet = Planet::find($id);
 
         if (!$planet) throw new PlanetNotFoundException();
-        
+
         return new PlanetResource($planet);
     }
     
-    public function update(PlanetUpdateRequest $request, Planet $planet)
+    public function update(PlanetUpdateRequest $request, $id)
     {
+        $planet = Planet::find($id);
+
+        if (!$planet) throw new PlanetNotFoundException();
+
         $planet->update($request->validated());
 
-        return response()->json(new PlanetResource($planet));
+        return response()->json([
+            'message' => 'Planet updated successfully.',
+            'data' => new PlanetResource($planet)
+        ]);
     }
 
-    public function destroy(Planet $planet)
+    public function destroy($id)
     {
+        $planet = Planet::find($id);
+
+        if (!$planet) throw new PlanetNotFoundException();
+
         $planet->delete();
 
-        return response()->noContent();
-
-        
+        return response()->json(['message' => 'Planet deleted successfully'], 204);
     }
 }
