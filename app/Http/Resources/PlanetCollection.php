@@ -9,6 +9,16 @@ class PlanetCollection extends ResourceCollection
 {
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "data" => parent::toArray($request),
+            'pagination' => [
+                'current_page' => $this->currentPage(),
+                'next_page' => $this->nextPageUrl(),
+                'previous_page' => $this->previousPageUrl(),
+                'per_page' => $this->perPage(),
+                'total' => $this->total(),
+                'last_page' => $this->lastPage(),
+            ],
+        ];
     }
 }
