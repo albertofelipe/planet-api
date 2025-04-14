@@ -6,12 +6,12 @@ use Exception;
 
     class EmailAlreadyExistsException extends Exception
     {
-        protected $message = 'Email address already exists';
+        protected $message = 'The email has already been taken.';
 
         public function render() 
         {
             return response()->json([
                 'message' => $this->message
-            ], 404);
+            ], 400);
         }
     }
